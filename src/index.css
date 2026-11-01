@@ -1,0 +1,225 @@
+@import 'tailwindcss';
+@import '@fontsource/russo-one/400.css';
+@import '@fontsource/chakra-petch/400.css';
+@import '@fontsource/chakra-petch/500.css';
+@import '@fontsource/chakra-petch/600.css';
+@import '@fontsource/chakra-petch/700.css';
+
+@theme {
+  --color-ink: #090b12;
+  --color-night: #11182a;
+  --color-steel: #1b2438;
+  --color-violet: #7949ff;
+  --color-violet-soft: #a78bff;
+  --color-cyan: #19d8ff;
+  --color-orange: #ff8b38;
+  --color-snow: #f5f7ff;
+  --color-mute: #9299ad;
+  --color-win: #34e08a;
+  --color-lose: #ff4d5e;
+
+  --font-display: 'Russo One', sans-serif;
+  --font-body: 'Chakra Petch', sans-serif;
+
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-snow);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(90% 60% at 50% -10%, rgb(121 73 255 / 0.22), transparent 70%),
+    radial-gradient(70% 40% at 50% 110%, rgb(25 216 255 / 0.1), transparent 70%),
+    var(--color-ink);
+  background-attachment: fixed;
+}
+
+/* Woven band pattern, a nod to Baoulé kita cloth. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' fill='none' stroke='%23F5F7FF' stroke-width='2'%3E%3Cpath d='M0 24 24 0h24L24 24zM48 24 72 0h24L72 24zM24 48 48 24l24 24-24 24zM0 72h24v24H0zM72 72h24v24H72z'/%3E%3C/svg%3E");
+}
+
+button,
+a {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-snow);
+  outline-offset: 2px;
+}
+
+/* HUD panel: chamfered corners with a lit edge. The fill is a pseudo-element so the edge survives clip-path. */
+.hud {
+  --cut: 12px;
+  --edge: linear-gradient(135deg, rgb(25 216 255 / 0.55), rgb(121 73 255 / 0.25) 40%, rgb(146 153 173 / 0.18));
+  --fill: linear-gradient(160deg, rgb(27 36 56 / 0.92), rgb(17 24 42 / 0.92));
+  position: relative;
+  isolation: isolate;
+  background: var(--edge);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.hud::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background: var(--fill);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+}
+.hud-sm {
+  --cut: 7px;
+}
+.hud-danger {
+  --edge: linear-gradient(135deg, var(--color-lose), var(--color-orange));
+  --fill: linear-gradient(160deg, rgb(58 24 30 / 0.95), rgb(30 18 24 / 0.95));
+}
+.hud-win {
+  --edge: linear-gradient(135deg, var(--color-win), rgb(52 224 138 / 0.3));
+}
+.hud-orange {
+  --edge: linear-gradient(135deg, var(--color-orange), rgb(255 139 56 / 0.25));
+}
+.hud-selected {
+  --edge: var(--color-cyan);
+  --fill: linear-gradient(160deg, #123a4f, #241f55); /* opaque: a translucent fill would show the bright edge */
+}
+
+/* Clip-path cuts outlines, so focus is drawn inside chamfered controls. */
+.hud:focus-visible,
+.btn:focus-visible {
+  outline-offset: -5px;
+}
+
+.btn {
+  --cut: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0.65rem 1.4rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition: filter 150ms, transform 120ms;
+}
+.btn:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.btn:disabled {
+  opacity: 0.45;
+}
+.btn-primary {
+  color: var(--color-snow);
+  background: linear-gradient(120deg, #6a39f5, var(--color-violet) 55%, #5b2ee0);
+}
+.btn-ghost {
+  color: var(--color-snow);
+  background: rgb(146 153 173 / 0.16);
+}
+.btn-danger {
+  color: var(--color-ink);
+  background: var(--color-orange);
+}
+.btn-hero {
+  min-height: 60px;
+  font-size: 1.1rem;
+  padding-inline: 1rem;
+}
+@media (min-width: 640px) {
+  .btn-hero {
+    min-height: 64px;
+    font-size: 1.35rem;
+    padding-inline: 3rem;
+  }
+}
+
+.glow-wrap {
+  filter: drop-shadow(0 0 18px rgb(121 73 255 / 0.55));
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mute);
+}
+
+/* Pendulum: speed and amplitude are set from the miss count through CSS variables. */
+@keyframes swing {
+  from {
+    transform: rotate(calc(var(--swing, 14deg) * -1));
+  }
+  to {
+    transform: rotate(var(--swing, 14deg));
+  }
+}
+.swing {
+  transform-origin: 100px 18px;
+  animation: swing var(--period, 2.4s) ease-in-out infinite alternate;
+}
+
+@keyframes pulse-danger {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+.tension-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  box-shadow: inset 0 0 90px 10px rgb(255 139 56 / 0.5);
+  animation: pulse-danger 1.1s ease-in-out infinite;
+}
+
+@keyframes radar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.radar-sweep {
+  animation: radar 1.6s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes blink-dots {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+.think-dot {
+  animation: blink-dots 1s infinite;
+}
+.think-dot:nth-child(2) { animation-delay: 0.15s; }
+.think-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .swing,
+  .tension-vignette,
+  .radar-sweep,
+  .think-dot {
+    animation: none;
+  }
+  .tension-vignette {
+    opacity: 0.6;
+  }
+}
