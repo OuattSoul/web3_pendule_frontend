@@ -1,7 +1,7 @@
 const TOKEN_KEY = 'pendule.token';
 
 /** Where the backend lives. Empty: the same address as this page. */
-export const BACKEND_URL = (import.meta.env.VITE_BACKEND_URL ?? '').replace(/\/+$/, '');
+export const BACKEND_URL = (import.meta.env.BACKEND_URL ?? '').replace(/\/+$/, '');
 
 export function getToken(): string | null {
   try {
