@@ -6,6 +6,7 @@ const BACKEND = 'http://127.0.0.1:8000';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  envPrefix: 'BACKEND_URL', // Vite only exposes VITE_* by default; nothing else reaches the browser
   server: {
     proxy: {
       '/api': BACKEND,
